@@ -56,11 +56,9 @@ function getListingForThreeHours() {
     for (var i = 0; i < list.length; i++) {
       if (!list[i].flyer_upload && list[i].pdf_url) {
         uploadFlyerPdf(list[i]);
-        break;
       }
       if (!list[i].video_upload && list[i].video_url) {
         uploadVideo(list[i]);
-        break;
       }
     }
   })
@@ -104,7 +102,7 @@ function uploadVideo(video_data) {
       var crm_id = video_data['crm_id'];
       var addr = video_data['address'];
       var urls = video_data['video_url'].split('/');
-      var file_name = video_data['pdf_url']. split('/')[urls.length - 1].replace('?dl=0', '');
+      var file_name = video_data['video_url']. split('/')[urls.length - 1].replace('?dl=0', '');
       // var file_name = 'LV_AntoineMAyoub_5842FlorenceAve.mp4';
       var pdf_path = '/updashboard-uploads/' + customer_name + '-' + crm_id + '/' + 'Listing' + '_' + standardizePath(addr) + '/' + file_name; 
       uploadVideoWithPath(pdf_path, video_data).then(function(res){
@@ -122,7 +120,7 @@ function updateUploadedStateForFlyer(flyer_data) {
   return new Promise(function(resolve, reject){
     let form_data = new FormData();
     form_data.append('listing_id', flyer_data['listing_id']);
-    form_data.append('listing_command', 'W');
+    form_data.append('listing_command', 'WF');
     form_data.append('flyer_upload', 'uploaded');
     makeHttpRequest('http://updashboardtest.site/updashboard/up_listing_api_update.php', form_data)
     .then(function(res){
@@ -136,7 +134,7 @@ function updateUploadedStateForVideo(video_data) {
   return new Promise(function(resolve, reject){
     let form_data = new FormData();
     form_data.append('listing_id', video_data['listing_id']);
-    form_data.append('listing_command', 'W');
+    form_data.append('listing_command', 'WV');
     form_data.append('video_upload', 'uploaded');
     makeHttpRequest('http://updashboardtest.site/updashboard/up_listing_api_update.php', form_data)
     .then(function(res){
