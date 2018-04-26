@@ -25,7 +25,7 @@ var args = {
   // token: conf.extended_access_token,
   id: '134713127328575', //The id represent {page_id || user_id || event_id || group_id}
   // id: '209454969647232', //The id represent {page_id || user_id || event_id || group_id}
-  stream: fs.createReadStream('/home/star/Downloads/small.mp4'), //path to the video,
+  // stream: fs.createReadStream('/home/star/Downloads/small.mp4'), //path to the video,
   title: "my video2",
   description: "my description2"
 };
@@ -54,10 +54,10 @@ function getListingForThreeHours() {
   makeHttpRequest('http://updashboardtest.site/updashboard/up_listing_api.php', form_data)
   .then(function(list){
     for (var i = 0; i < list.length; i++) {
-      // if (!list[i].flyer_upload && list[i].pdf_url) {
-      //   uploadFlyerPdf(list[i]);
-      //   break;
-      // }
+      if (!list[i].flyer_upload && list[i].pdf_url) {
+        uploadFlyerPdf(list[i]);
+        break;
+      }
       if (!list[i].video_upload && list[i].video_url) {
         uploadVideo(list[i]);
         break;
@@ -311,10 +311,9 @@ function getPageInfoFromApi(customer_data){
   })
 }
 var cron = require('node-cron');
-// var task = cron.schedule('* * */3 * * *', function(){
-//   console.log('abcde');
-//   // getListingForThreeHours();
-// });
+var task = cron.schedule('* * */3 * * *', function(){
+  getListingForThreeHours();
+});
 // var FB = require('fb');
 // FB.setAccessToken(conf.extended_access_token);
 // var PDFImage = require("pdf-image").PDFImage;
